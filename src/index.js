@@ -15,14 +15,17 @@ class Board extends React.Component {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
+      xIsNext: true, //boolean to determine which player is next
     };
   }
 
   handleClick(i) {
     const squares = this.state.squares.slice(); //create a copy of the squares array to modify - shows why immutability is important
-    squares[i] = 'X';
-    this.setState({squares: squares});
-    console.log(squares);
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext, //flip xIsNext on click
+    });
   }
 
   renderSquare(i) {
@@ -35,7 +38,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : '0');
 
     return (
       <div>
