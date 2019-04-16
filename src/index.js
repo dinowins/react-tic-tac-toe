@@ -21,6 +21,9 @@ class Board extends React.Component {
 
   handleClick(i) {
     const squares = this.state.squares.slice(); //create a copy of the squares array to modify - shows why immutability is important
+    if (calculateWinner(squares) || squares [i]) {
+      return;
+    }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       squares: squares,
@@ -38,7 +41,13 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : '0');
+    const winner = calculateWinner(this.state.squares);
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next players: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
 
     return (
       <div>
@@ -86,7 +95,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function calculateWinner(squares) { //helper function to find winner 
+function calculateWinner(squares) { //helper function to find winner
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
